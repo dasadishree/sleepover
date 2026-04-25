@@ -25,34 +25,37 @@ const Guesserpg = () => {
 
   // call actor
 useEffect(() => {
-    if (!ready || !actorPeerId) return;
+  if (!ready || !actorPeerId) return;
 
-    const p = peer.current;
+  const p = peer.current;
+  if (!p || p.destroyed) return;
 
-    // small delay to make sure peer is fully open before calling
-    setTimeout(() => {
-      const call = p.call(actorPeerId, null);
+  // increase delay to 1500ms to make sure actor peer is listening
+  const timer = setTimeout(() => {
+    console.log("attempting call to:", actorPeerId);
+    const call = p.call(actorPeerId, null);
 
-      if (!call) {
-        console.error("call failed — peer not ready yet");
-        return;
+    if (!call) {
+      console.error("call returned undefined");
+      return;
+    }
+
+    call.on("stream", (remoteStream) => {
+      console.log("got stream!");
+      if (videoRef.current) {
+        videoRef.current.srcObject = remoteStream;
       }
+      setCallStatus("connected");
+    });
 
-      call.on("stream", (remoteStream) => {
-        console.log("got stream");
-        if (videoRef.current) {
-          videoRef.current.srcObject = remoteStream;
-        }
-        setCallStatus("connected");
-      });
+    call.on("error", (err) => {
+      console.error("call error:", err);
+    });
+  }, 1500);
 
-      call.on("error", (err) => {
-        console.error("call error:", err);
-      });
-    }, 500);
+  return () => clearTimeout(timer);
+}, [ready, actorPeerId]);
 
-  }, [ready, actorPeerId]);
-  
   return (
     <div className="w-[95vw] h-screen py-[2vh] mx-auto">
       <img
