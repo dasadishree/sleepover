@@ -65,7 +65,6 @@ const Guesserpg = () => {
           </h1>
         </div>
 
-        {/* Actor video */}
         <div className="mt-[12vh] flex flex-col items-center gap-4">
           <div className="relative rounded-2xl overflow-hidden border-4 border-black w-[40vw] aspect-video bg-black">
             <video
@@ -89,12 +88,11 @@ const Guesserpg = () => {
               }}
             >
               {callStatus === "connected"
-                ? "watching actor 👀"
+                ? "watching actor"
                 : "waiting for actor..."}
             </div>
           </div>
 
-          {/* Placeholder for emoji choices */}
           <div className="mt-6 text-lg">
             emoji choices coming here...
           </div>
