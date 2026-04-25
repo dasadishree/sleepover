@@ -24,29 +24,35 @@ const Guesserpg = () => {
   }, []);
 
   // call actor
-  useEffect(() => {
+useEffect(() => {
     if (!ready || !actorPeerId) return;
 
     const p = peer.current;
 
-    console.log("calling actor...");
+    // small delay to make sure peer is fully open before calling
+    setTimeout(() => {
+      const call = p.call(actorPeerId, null);
 
-    const call = p.call(actorPeerId, null);
-
-    call.on("stream", (remoteStream) => {
-      console.log("got stream");
-      if (videoRef.current) {
-        videoRef.current.srcObject = remoteStream;
+      if (!call) {
+        console.error("call failed — peer not ready yet");
+        return;
       }
-      setCallStatus("connected");
-    });
 
-    call.on("error", (err) => {
-      console.error("call error:", err);
-    });
+      call.on("stream", (remoteStream) => {
+        console.log("got stream");
+        if (videoRef.current) {
+          videoRef.current.srcObject = remoteStream;
+        }
+        setCallStatus("connected");
+      });
+
+      call.on("error", (err) => {
+        console.error("call error:", err);
+      });
+    }, 500);
 
   }, [ready, actorPeerId]);
-
+  
   return (
     <div className="w-[95vw] h-screen py-[2vh] mx-auto">
       <img
