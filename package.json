@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "peerjs": "^1.5.5",
+    "react-webcam": "^7.2.0"
+  }
+}
