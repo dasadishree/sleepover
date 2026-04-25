@@ -1,6 +1,13 @@
-import TestGame from "./TestGame.jsx"
+import { useState } from "react";
+import "./App.css";
+import Actorpg from "./components/actorpg";
+
 function App() {
-  return <TestGame />
+	return (
+		<>
+			<Actorpg />
+		</>
+	);
 }
 
-export default App
+export default App;
