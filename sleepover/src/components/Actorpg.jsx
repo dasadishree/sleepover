@@ -17,6 +17,19 @@ const Actorpg = () => {
 						(Actor)
 					</h1>
 				</div>
+				<div className="flex items-center justify-center w-fit absolute top-[0vh] -translate-y-[10vh] right-[2vw] gap-[0vw]">
+					<img
+						src="/emojis/yay.gif"
+						className="top-[20vh] left-[6.5vw] absolute w-[6vw]"
+						alt="emoji"
+					/>
+					<img src="/imgs/dream.png" className="w-[20vw]" alt="" />
+					<img
+						src="/imgs/reem.png"
+						className="mt-[45vh] w-[12vw] border-3 border-dotted rounded-[1vh]"
+						alt=""
+					/>
+				</div>
 			</div>
 		</div>
 	);
