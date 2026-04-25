@@ -9,9 +9,14 @@ const Actorpg = () => {
 				alt=""
 			/>
 			<div className="z-10 relative">
-				<h1 className="text-[10vh] vintageone tracking-[-0.15vw] text-black">
-					I have a dream...
-				</h1>
+				<div className="flex items-center justify-between w-full">
+					<h1 className="text-[10vh] vintageone tracking-[-0.15vw] text-black">
+						I have a dream...
+					</h1>
+					<h1 className="text-[6vh] vintageone tracking-[-0.15vw] text-black">
+						(Actor)
+					</h1>
+				</div>
 			</div>
 		</div>
 	);
