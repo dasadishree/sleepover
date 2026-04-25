@@ -67,8 +67,7 @@ const Actorpg = () => {
             alt=""
           />
         </div>
-
-        // webcam
+        
         <div className="mt-[12vh] flex flex-col items-center gap-4">
           <div className="relative rounded-2xl overflow-hidden border-4 border-black w-[40vw] aspect-video">
             <Webcam
