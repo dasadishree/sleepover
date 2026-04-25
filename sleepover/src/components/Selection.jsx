@@ -5,12 +5,15 @@ import { db } from "../firebase";
 
 
 const characters = [
-    { id: "celeste", src: "/characters/celeste.jpeg", name: "CELESTE-CAKE :)"},
+    { id: "celeste", src: "/characters/celeste.png", name: "CELESTE-CAKE :)"},
     { id: "kailing", src: "/characters/kailing.png", name: "KAI-LING-CAKE :D" },
     { id: "olive", src: "/characters/olive.jpeg", name: "OLIVE-CAKE :P"},
     { id: "reem", src: "/characters/reem.png", name: "REEM-CAKE :-)"},
     { id: "tongyu", src: "/characters/tongyu.png", name: "TONGYU-CAKE :O"},
     { id: "renran", src: "/characters/renran.png", name: "RENRAN-CAKE :3"},
+    { id: "max", src: "/characters/max.png", name: "MAX-CAKE :D"},
+    { id: "paolo", src: "/characters/paolo.png", name: "PAOLO-CAKE :)"},
+    { id: "annabel", src: "/characters/annabel.png", name: "ANNABEL-CAKE :P"}
 ]
 
 const Selection = () => {
