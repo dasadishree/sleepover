@@ -10,7 +10,7 @@ function App() {
 				alt=""
 			/>
 			<div className="z-10 relative">
-				<h1 className="text-[10vh] vintageone tracking-[-0.15vw]">
+				<h1 className="text-[10vh] vintageone tracking-[-0.15vw] text-black">
 					I have a dream...
 				</h1>
 			</div>
