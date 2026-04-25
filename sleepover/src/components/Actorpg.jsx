@@ -62,7 +62,7 @@ const Actorpg = () => {
           />
           <img src="/imgs/dream.png" className="w-[20vw]" alt="" />
           <img
-            src="/imgs/reem.png"
+            src="/imgs/reem-new.png"
             className="mt-[45vh] w-[12vw] border-3 border-dotted rounded-[1vh]"
             alt=""
           />
