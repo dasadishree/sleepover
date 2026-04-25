@@ -11,7 +11,7 @@ const Actorpg = () => {
 			<div className="z-10 relative">
 				<div className="flex items-center justify-between w-full">
 					<h1 className="text-[10vh] vintageone tracking-[-0.15vw] text-black">
-						I have a dream...
+						d<i>REEM</i>oji...
 					</h1>
 					<h1 className="text-[6vh] vintageone tracking-[-0.15vw] text-black">
 						(Actor)
