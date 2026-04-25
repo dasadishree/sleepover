@@ -213,16 +213,16 @@ const Actorpg = () => {
 					)}
 
 					{!isReady &&(
-						<button
-							onClick={handleReroll}
-							disabled={!emojiId || isRerolling}
-							className="px-6 py-2 rounded-full text-white font-bold text-base"
-							style={{
-								background: "black",
-								opacity: emojiId && !isRerolling ? 1 : 0.4,
-								cursor: emojiId && !isRerolling ? "pointer" : "not-allowed",
-							}}
-						>
+					<button
+						onClick={handleReroll}
+						disabled={!emojiId || isRerolling}
+						className="px-6 py-2 rounded-full text-white font-bold text-base"
+						style={{
+							background: "black",
+							opacity: emojiId && !isRerolling ? 1 : 0.4,
+							cursor: emojiId && !isRerolling ? "pointer" : "not-allowed",
+						}}
+					>
 						{isRerolling ? "rerolling..." : "reroll emoji"}
 					</button>
 					)}

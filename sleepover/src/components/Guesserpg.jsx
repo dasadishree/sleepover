@@ -22,13 +22,6 @@ const Guesserpg = () => {
 
     return () => unsub();
   }, []);
-  
- useEffect(() => {
-    const resetActor = async () => {
-      await setDoc(doc(db, "players", "actor"), { ready: false, peerId: null });
-    };
-    resetActor();
-  }, []);
 
   // call actor
 useEffect(() => {
@@ -38,9 +31,18 @@ useEffect(() => {
   if (!p || p.destroyed) return;
 
   // increase delay to 1500ms to make sure actor peer is listening
-  const timer = setTimeout(() => {
+  const timer = setTimeout(async () => {
     console.log("attempting call to:", actorPeerId);
-    const call = p.call(actorPeerId, null);
+
+    let stream
+    try{
+      stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+    } catch {
+      console.error("coula not get media:", err)
+      return
+    }
+    console.log("got local stream, calling actor...")
+    const call = p.call(actorPeerId, stream);
 
     if (!call) {
       console.error("call returned undefined");
@@ -58,7 +60,7 @@ useEffect(() => {
     call.on("error", (err) => {
       console.error("call error:", err);
     });
-  }, 1500);
+  }, 2000);
 
   return () => clearTimeout(timer);
 }, [ready, actorPeerId]);

@@ -1,5 +1,7 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
+// import backgroundMusic from './assets/music/intro.mp3';
+// const audio = new Audio(backgroundMusic);
 
 const Start = () => {
     const navigate = useNavigate();

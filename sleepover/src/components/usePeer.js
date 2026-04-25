@@ -7,7 +7,17 @@ export const usePeer = () => {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const p = new Peer();
+    const p = new Peer(undefined, {
+      host: "0.peerjs.com",
+      port: 443,
+      secure: true,
+      config: {
+        iceServers: [
+          {urls: "stun:stun1.l.google.com:19302"},
+          {urls: "stun:stun1.1.l.google.com:19302"},
+        ]
+      }
+    });
 
     peer.current = p;
 
