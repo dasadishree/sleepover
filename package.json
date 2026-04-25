@@ -1,6 +1,9 @@
 {
   "dependencies": {
+<<<<<<< HEAD
     "firebase": "^12.12.1",
+=======
+>>>>>>> 23a92fa862b76e40952b58e461b8f7f2fa31f1f1
     "peerjs": "^1.5.5",
     "react-webcam": "^7.2.0"
   }
