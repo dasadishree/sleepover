@@ -54,7 +54,7 @@ const Actorpg = () => {
 						(Actor)
 					</h1>
 				</div>
-				
+
 				<div className="flex flex-col items-center justify-center w-fit absolute bottom-[0vh] bg-blue-500/0 right-[-2.5vw] gap-[0vw] h-fit">
 					<img
 						src="/emojis/yay.gif"
@@ -73,7 +73,7 @@ const Actorpg = () => {
 					/>
 				</div>
 
-				<div className="mt-[12vh] flex flex-col items-center gap-4">
+				<div className="mt-[12vh] flex flex-col items-center gap-4 w-[70vw] mr-auto bg-green-500/0">
 					<div className="relative rounded-2xl overflow-hidden border-4 border-black w-[40vw] aspect-video">
 						<Webcam
 							ref={webcamRef}
@@ -81,7 +81,7 @@ const Actorpg = () => {
 							mirrored={true}
 							onUserMedia={handleUserMedia}
 							onUserMediaError={() => setCamReady(false)}
-							videoConstraints={{ width: 640, height: 480, facingMode: "user" }}
+							videoConstraints={{ width: 800, height: 600, facingMode: "user" }}
 							style={{ width: "100%", height: "100%", objectFit: "cover" }}
 						/>
 						{camReady && (
