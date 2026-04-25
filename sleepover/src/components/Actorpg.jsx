@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, onSnapshot, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { usePeer } from "./usePeer";
 
@@ -10,6 +10,7 @@ const Actorpg = () => {
 	const [isReady, setIsReady] = useState(false);
 	const [camReady, setCamReady] = useState(false);
 	const [callStatus, setCallStatus] = useState("waiting");
+	const [selectedCharacterId, setSelectedCharacterId] = useState("reem");
 
 	const { peer, peerId, ready } = usePeer();
 
@@ -23,19 +24,47 @@ const Actorpg = () => {
 		});
 	}, [ready, localStream]);
 
+	// listen for actor-selected character
+	useEffect(() => {
+		const unsub = onSnapshot(doc(db, "players", "actor"), (docSnap) => {
+			const data = docSnap.data();
+			if (data?.characterId) {
+				setSelectedCharacterId(data.characterId);
+			}
+		});
+
+		return () => unsub();
+	}, []);
+
 	// saves peer id to firebase
 	const handleReady = async () => {
 		if (!localStream || !peerId) return;
 		setIsReady(true);
-		await setDoc(doc(db, "players", "actor"), {
-			ready: true,
-			peerId: peerId,
-		});
+		await setDoc(
+			doc(db, "players", "actor"),
+			{
+				ready: true,
+				peerId: peerId,
+			},
+			{ merge: true }
+		);
 	};
 
 	const handleUserMedia = (stream) => {
 		setLocalStream(stream);
 		setCamReady(true);
+	};
+
+	const getActorImageSrc = () => {
+		if (selectedCharacterId === "reem") return "/imgs/reem-new.png";
+		const characterImageMap = {
+			celeste: "/characters/celeste.jpeg",
+			kailing: "/characters/kailing.png",
+			olive: "/characters/olive.jpeg",
+			tongyu: "/characters/tongyu.png",
+			renran: "/characters/renran.png",
+		};
+		return characterImageMap[selectedCharacterId] || "/imgs/reem-new.png";
 	};
 
 	return (
@@ -67,7 +96,7 @@ const Actorpg = () => {
 						alt=""
 					/>
 					<img
-						src="/imgs/reem-new.png"
+						src={getActorImageSrc()}
 						className="w-[25vw] ml-[13vw] rounded-[1vh] -scale-x-100"
 						alt=""
 					/>

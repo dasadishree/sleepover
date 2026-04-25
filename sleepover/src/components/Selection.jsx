@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {useNavigate} from "react-router-dom";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 
 const characters = [
@@ -15,6 +17,7 @@ const Selection = () => {
     const navigate = useNavigate()
     const [selected, setSelected] = useState(0)
     const [role, setRole] = useState(null)
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
     function goLeft(){
         setSelected((selected - 1 + characters.length) % characters.length)
@@ -30,6 +33,32 @@ const Selection = () => {
         window.addEventListener("keydown", handleKey)
         return () => window.removeEventListener("keydown", handleKey)
     }, [])
+
+    // sslect character & store
+    async function handleCharacterSelect() {
+        if (!role) return;
+        const selectedCharacter = characters[selected];
+        setIsSubmitting(true);
+
+        try {
+            await setDoc(
+                doc(db, "players", role),
+                {
+                    role,
+                    characterId: selectedCharacter.id,
+                    characterName: selectedCharacter.name,
+                    updatedAt: Date.now(),
+                },
+                { merge: true }
+            );
+
+            navigate(role === "actor" ? "/actor" : "/guesser");
+        } catch (error) {
+            console.error("failed to store character selection:", error);
+        } finally {
+            setIsSubmitting(false);
+        }
+    }
 
     return (
         <div>
@@ -82,6 +111,16 @@ const Selection = () => {
                         </div>
                         <button onClick={goRight} className="text-white text-[5vh] px-4">▶</button>
                     </div>
+
+{/* submit button for character */}
+                    <button
+                        onClick={handleCharacterSelect}
+                        disabled={isSubmitting}
+                        style={{fontFamily: "cursive"}}
+                        className="absolute z-10 bottom-[3%] left-1/2 -translate-x-1/2 bg-white px-[6vw] py-[2vh] rounded-full text-[2.5vh] text-pink-400 font-bold disabled:opacity-60"
+                    >
+                        {isSubmitting ? "SAVING..." : "SELECT"}
+                    </button>
 
                     <div style={{fontFamily: "'Rubik Bubbles', cursive"}} className="absolute z-10 bottom-[10%] left-1/2 -translate-x-1/2 text-pink-400 text-[5vh]">
                         <h1>PICK YOUR CHARACTER!!!!</h1>
