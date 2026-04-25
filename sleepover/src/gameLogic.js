@@ -1,5 +1,5 @@
 import {db} from "./firebase.js"
-import {doc, setDoc, onSnapshot} from "firebase/firestore"
+import {doc, setDoc, getDoc} from "firebase/firestore"
 
 // logic for the emojis / guesing
 export const emojiChoices = [
@@ -21,7 +21,7 @@ export const emojiChoices = [
     {id: "sad-cat-thumbs-up", src: "/emojis/sad-cat-thumbs-up.png"}
 ]
 
-// randomly selects emoji for actor
+// randomly selects emoji (for the actor)
 export async function startRound() {
     const random = emojiChoices[Math.floor(Math.random()* emojiChoices.length)]
     await setDoc(doc(db,"emojis", "correctEmoji"), {
@@ -34,7 +34,7 @@ export async function startRound() {
     return random.id
 }
 
-//re select a diff emoji
+//re select a diff emoji (for the actor)
 export async function rerollEmoji(currentEmojiId){
     const others = emojiChoices.filter(e=>e.id!==currentEmojiId)
     const random = others[Math.floor(Math.random()* others.length)]
@@ -51,4 +51,18 @@ export async function rerollEmoji(currentEmojiId){
 //get source file of the image
 export function getSrc(emojiId){
     return emojiChoices.find(e=>e.id===emojiId)?.src
+}
+
+// guesser guesses an emoji (for the guesser)
+export async function guessEmoji(emojiId){
+    await setDoc(doc(db, "emojis", "guessedEmoji"), {
+        value: emojiId
+    })
+}
+
+//check guesser's answer (for both??)
+export async function checkGuess(){
+    const correct = await getDoc(doc(db, "emojis", "correctEmoji"))
+    const guessed = await getDoc(doc(db, "emojis", "guessedEmoji"))
+    return correct.data()?.value === guessed.data()?.value
 }
