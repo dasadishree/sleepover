@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { usePeer } from "./usePeer";
 
@@ -21,6 +21,13 @@ const Guesserpg = () => {
     });
 
     return () => unsub();
+  }, []);
+  
+ useEffect(() => {
+    const resetActor = async () => {
+      await setDoc(doc(db, "players", "actor"), { ready: false, peerId: null });
+    };
+    resetActor();
   }, []);
 
   // call actor
