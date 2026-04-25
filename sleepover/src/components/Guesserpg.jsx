@@ -31,7 +31,7 @@ const Guesserpg = () => {
 
     console.log("calling actor...");
 
-    const call = p.call(actorPeerId);
+    const call = p.call(actorPeerId, null);
 
     call.on("stream", (remoteStream) => {
       console.log("got stream");
