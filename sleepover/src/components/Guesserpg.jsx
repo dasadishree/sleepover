@@ -24,17 +24,24 @@ const Guesserpg = () => {
   }, []);
 
   // call actor
-  useEffect(() => {
-    if (!ready || !actorPeerId) return;
+useEffect(() => {
+  if (!ready || !actorPeerId) return;
 
-    const p = peer.current;
+  const p = peer.current;
+  if (!p || p.destroyed) return;
 
-    console.log("calling actor...");
-
+  // increase delay to 1500ms to make sure actor peer is listening
+  const timer = setTimeout(() => {
+    console.log("attempting call to:", actorPeerId);
     const call = p.call(actorPeerId, null);
 
+    if (!call) {
+      console.error("call returned undefined");
+      return;
+    }
+
     call.on("stream", (remoteStream) => {
-      console.log("got stream");
+      console.log("got stream!");
       if (videoRef.current) {
         videoRef.current.srcObject = remoteStream;
       }
@@ -44,8 +51,10 @@ const Guesserpg = () => {
     call.on("error", (err) => {
       console.error("call error:", err);
     });
+  }, 1500);
 
-  }, [ready, actorPeerId]);
+  return () => clearTimeout(timer);
+}, [ready, actorPeerId]);
 
   return (
     <div className="w-[95vw] h-screen py-[2vh] mx-auto">
