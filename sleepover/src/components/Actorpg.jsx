@@ -3,6 +3,7 @@ import Webcam from "react-webcam";
 import { doc, onSnapshot, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { usePeer } from "./usePeer";
+import { getSrc, rerollEmoji, startRound } from "../gameLogic";
 
 const Actorpg = () => {
 	const webcamRef = useRef(null);
@@ -11,6 +12,9 @@ const Actorpg = () => {
 	const [camReady, setCamReady] = useState(false);
 	const [callStatus, setCallStatus] = useState("waiting");
 	const [selectedCharacterId, setSelectedCharacterId] = useState("reem");
+	const [actorImageSrc, setActorImageSrc] = useState("/characters/reem.png");
+	const [emojiId, setEmojiId] = useState(null);
+	const [isRerolling, setIsRerolling] = useState(false);
 
 	const { peer, peerId, ready } = usePeer();
 
@@ -36,6 +40,22 @@ const Actorpg = () => {
 		return () => unsub();
 	}, []);
 
+	// start with a random emoji immediately when actor page opens
+	useEffect(() => {
+		let mounted = true;
+		(async () => {
+			try {
+				const firstEmojiId = await startRound();
+				if (mounted) setEmojiId(firstEmojiId);
+			} catch (error) {
+				console.error("failed to start round:", error);
+			}
+		})();
+		return () => {
+			mounted = false;
+		};
+	}, []);
+
 	// saves peer id to firebase
 	const handleReady = async () => {
 		if (!localStream || !peerId) return;
@@ -55,16 +75,31 @@ const Actorpg = () => {
 		setCamReady(true);
 	};
 
-	const getActorImageSrc = () => {
-		if (selectedCharacterId === "reem") return "/imgs/reem-new.png";
-		const characterImageMap = {
-			celeste: "/characters/celeste.jpeg",
-			kailing: "/characters/kailing.png",
-			olive: "/characters/olive.jpeg",
-			tongyu: "/characters/tongyu.png",
-			renran: "/characters/renran.png",
-		};
-		return characterImageMap[selectedCharacterId] || "/imgs/reem-new.png";
+	useEffect(() => {
+		setActorImageSrc(`/imgs/${selectedCharacterId}.png`);
+	}, [selectedCharacterId]);
+
+	const handleActorImageError = () => {
+		if (actorImageSrc !== `/characters/${selectedCharacterId}.png`) {
+			setActorImageSrc(`/characters/${selectedCharacterId}.png`);
+			return;
+		}
+		if (actorImageSrc !== "/imgs/reem.png") {
+			setActorImageSrc("/imgs/reem.png");
+		}
+	};
+
+	const handleReroll = async () => {
+		if (!emojiId) return;
+		setIsRerolling(true);
+		try {
+			const newEmojiId = await rerollEmoji(emojiId);
+			setEmojiId(newEmojiId);
+		} catch (error) {
+			console.error("failed to reroll emoji:", error);
+		} finally {
+			setIsRerolling(false);
+		}
 	};
 
 	return (
@@ -86,7 +121,7 @@ const Actorpg = () => {
 
 				<div className="flex flex-col items-center justify-center w-fit absolute bottom-[0vh] bg-blue-500/0 right-[-2.5vw] gap-[0vw] h-fit">
 					<img
-						src="/emojis/yay.gif"
+						src={getSrc(emojiId) || "/emojis/yay.gif"}
 						className="top-[25vh] left-[6.5vw] absolute w-[6vw]"
 						alt="emoji"
 					/>
@@ -96,7 +131,8 @@ const Actorpg = () => {
 						alt=""
 					/>
 					<img
-						src={getActorImageSrc()}
+						src={actorImageSrc}
+						onError={handleActorImageError}
 						className="w-[25vw] ml-[13vw] rounded-[1vh] -scale-x-100"
 						alt=""
 					/>
@@ -175,6 +211,19 @@ const Actorpg = () => {
 							you are set as ready!
 						</p>
 					)}
+
+					<button
+						onClick={handleReroll}
+						disabled={!emojiId || isRerolling}
+						className="px-6 py-2 rounded-full text-white font-bold text-base"
+						style={{
+							background: "black",
+							opacity: emojiId && !isRerolling ? 1 : 0.4,
+							cursor: emojiId && !isRerolling ? "pointer" : "not-allowed",
+						}}
+					>
+						{isRerolling ? "rerolling..." : "reroll emoji"}
+					</button>
 				</div>
 			</div>
 		</div>
