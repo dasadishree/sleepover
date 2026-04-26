@@ -79,16 +79,14 @@ const Guesserpg = () => {
 	return (
 		<div className="w-[95vw] h-screen py-[2vh] mx-auto">
 			<img
-				src="/imgs/paper.jpg"
+				src="/imgs/gradient.png"
 				className="fixed top-0 left-0 w-full h-screen object-cover z-0"
 				alt=""
 			/>
 
 			<div className="z-10 relative">
 				<div className="flex items-center justify-between w-full">
-					<h1 className="text-[10vh] vintageone tracking-[-0.15vw] text-black">
-						d<i>REEM</i>oji...
-					</h1>
+        <img src="public/dreemoji.png" className="h-[10vh]" alt="dreemoji"/>
 					<h1 className="text-[6vh] vintageone tracking-[-0.15vw] text-black">
 						(Guesser)
 					</h1>

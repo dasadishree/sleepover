@@ -105,15 +105,13 @@ const Actorpg = () => {
 	return (
 		<div className="w-[95vw] h-screen py-[2vh] mx-auto">
 			<img
-				src="/imgs/paper.jpg"
+				src="/imgs/gradient.png"
 				className="fixed top-0 left-0 w-full h-screen object-cover z-0"
 				alt=""
 			/>
 			<div className="z-10 relative">
 				<div className="flex items-center justify-between w-full">
-					<h1 className="text-[10vh] vintageone tracking-[-0.15vw] text-black">
-						d<i>REEM</i>oji...
-					</h1>
+					<img src="public/dreemoji.png" className="h-[10vh]" alt="dreemoji"/>
 					<h1 className="text-[6vh] vintageone tracking-[-0.15vw] text-black">
 						(Actor)
 					</h1>
@@ -193,39 +191,46 @@ const Actorpg = () => {
 							: "waiting……."}
 					</p>
 
-					{!isReady ? (
+					<div className="h-[56px] flex items-center justify-center">
+						{!isReady ? (
+							<button
+								disabled={!camReady || !ready}
+								onClick={handleReady}
+								className="px-8 py-3 rounded-full text-white font-bold text-lg text-white"
+								style={{
+									background: "pink",
+									opacity: camReady && ready ? 1 : 0.4,
+									cursor: camReady && ready ? "pointer" : "not-allowed",
+								}}
+							>
+								ready to act
+							</button>
+						) : (
+							<p style={{ color: "#3db87a", fontWeight: 700 }}>
+								you are set as ready!
+							</p>
+						)}
+					</div>
+
+					<div className="h-[56px] flex items-center justify-center">
 						<button
-							disabled={!camReady || !ready}
-							onClick={handleReady}
-							className="px-8 py-3 rounded-full text-white font-bold text-lg"
+							onClick={handleReroll}
+							disabled={!emojiId || isRerolling || isReady}
+							className="px-8 py-3 rounded-full text-white font-bold text-lg text-white"
 							style={{
-								background: "black",
-								opacity: camReady && ready ? 1 : 0.4,
-								cursor: camReady && ready ? "pointer" : "not-allowed",
+								background: "pink",
+								opacity:
+									emojiId && !isRerolling && !isReady ? 1 : 0.4,
+								cursor:
+									emojiId && !isRerolling && !isReady
+										? "pointer"
+										: "not-allowed",
+								visibility: isReady ? "hidden" : "visible",
 							}}
 						>
-							ready to act
+							{isRerolling ? "rerolling..." : "reroll emoji"}
 						</button>
-					) : (
-						<p style={{ color: "#3db87a", fontWeight: 700 }}>
-							you are set as ready!
-						</p>
-					)}
-
-					{!isReady &&(
-					<button
-						onClick={handleReroll}
-						disabled={!emojiId || isRerolling}
-						className="px-6 py-2 rounded-full text-white font-bold text-base"
-						style={{
-							background: "black",
-							opacity: emojiId && !isRerolling ? 1 : 0.4,
-							cursor: emojiId && !isRerolling ? "pointer" : "not-allowed",
-						}}
-					>
-						{isRerolling ? "rerolling..." : "reroll emoji"}
-					</button>
-					)}
+					</div>
 				</div>
 			</div>
 		</div>
