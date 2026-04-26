@@ -48,29 +48,31 @@ const Guesserpg = () => {
 			activeCallRef.current = null;
 		}
 
-		const call = p.call(actorPeerId, null);
-		if (!call) return;
-		activeCallRef.current = call;
+    navigator.mediaDevices.getUserMedia({ video: true, audio:false})
+      .then((stream)=>{
+        const call = p.call(actorPeerId, stream);
+        if(!call) return;
+        activeCallRef.current = call;
+      
+          call.on("stream", (remoteStream) => {
+            if (videoRef.current) videoRef.current.srcObject = remoteStream;
+            setCallStatus("connected");
+          });
 
-		call.on("stream", (remoteStream) => {
-			if (videoRef.current) videoRef.current.srcObject = remoteStream;
-			setCallStatus("connected");
-		});
-
-		call.on("error", (err) => {
-			console.error("call error:", err);
-			setCallStatus("waiting");
-		});
+          call.on("error", (err) => {
+            console.error("call error:", err);
+            setCallStatus("waiting");
+          });
 
 		call.on("close", () => setCallStatus("waiting"));
-
+      })
 		return () => {
 			try {
-				call.close();
+				activeCallRef.current?.close();
 			} catch {
 				/* ignore */
 			}
-			if (activeCallRef.current === call) activeCallRef.current = null;
+			activeCallRef.current = null;
 		};
 	}, [ready, actorPeerId, peer]);
 
