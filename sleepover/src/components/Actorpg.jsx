@@ -119,7 +119,7 @@ const Actorpg = () => {
 					</h1>
 				</div>
 
-				<div className="flex flex-col items-center justify-center w-fit absolute bottom-[0vh] bg-blue-500/0 right-[-2.5vw] gap-[0vw] h-fit">
+				<div className="flex flex-col items-center justify-center w-fit fixed bottom-[0vh] bg-blue-500/0 right-[-2.5vw] gap-[0vw] h-fit">
 					<img
 						src={getSrc(emojiId) || "/emojis/yay.gif"}
 						className="top-[25vh] left-[6.5vw] absolute w-[6vw]"
